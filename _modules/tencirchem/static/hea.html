@@ -734,7 +734,12 @@
 
         <span class="n">init_guess</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">init_guess</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">h_qubit_op</span> <span class="o">=</span> <span class="n">h_qubit_op</span>
+        <span class="c1"># convert to real coefficients and prevent complex energy expectation outcome</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_qubit_op</span> <span class="o">=</span> <span class="n">QubitOperator</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">h_qubit_op</span><span class="o">.</span><span class="n">terms</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">iscomplex</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">real</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">h_qubit_op</span><span class="o">.</span><span class="n">terms</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">circuit</span><span class="p">,</span> <span class="n">Callable</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">get_circuit</span> <span class="o">=</span> <span class="n">circuit</span>
